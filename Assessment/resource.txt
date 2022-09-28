@@ -1,0 +1,58 @@
+create database dphoneCorporation;
+use dphoneCorporation;
+create table User( userId int primary key,firstname varchar(20),lastname varchar(20), address varchar (20), mobile int (10), email varchar(10), username varchar(10), password varchar(10),referralpoints int(10) );
+
+create table Referral( referalId int primary key, referralFirstname varchar(20), referrallastname varchar(20), mobile int (10), email varchar(20), userId int (10),foreign key(userId) references user(userId), dateofreferral date, status varchar(10));
+
+
+create table Customer(custermerId int primary key, firstname varchar(20), lastname varchar(20), email varchar(10), mobile int(10));
+
+create table BuyingDetails( custermerId int (10),userId int(10),foreign key (custermerId) references Customer(custermerId), foreign key(userId) references user(userId),purchasedate date, productName varchar(20));
+
+insert into User values(101,'ramesh','sharma','kanpur',43664356,'r@gmail','ramesh10','wsxokn',2000);
+insert into User values(102,'suresh','sharma','chandigarh',53664356,'s@gmail','suresh10','dcfs',1000);
+insert into User values(103,'anuj','mehta','tamil nadu',63664356,'a@gmail','anuj99','sfvsv',0);
+insert into User values(104,'vikram','gupta','dehradun',73664356,'v@gmail','vg1000','jtnf',3000);
+insert into User values(105,'sagar','verma','noida',83664356,'sa@gmail','sc70','jyujdgb',1000);
+
+select * from user;
+
+insert into Referral values(1001,'chamesh','mehta',4536352,'c@gmail.com',101,'2022-08-02','active');
+insert into Referral values(1002,'umesh','mehta',5536352,'u@gmail.com',102,'2022-09-21','active');
+insert into Referral values(1003,'rajni','kant',6536352,'ra@gmail.com',103,'2022-001-12','passive');
+insert into Referral values(1004,'bobby','adhitynath',7536352,'bo@gmail.com',104,'2022-09-21','active');
+insert into Referral values(1005,'komal','gupta',8536352,'ko@gmail.com',105,'2022-11-23','active');
+
+select * from referral;
+
+insert into Customer values(10,'rajni','kant','ra@gmail',6536352);
+insert into Customer values(11,'bobby','adhitynath','bo@gmail',7536352);
+insert into Customer values(12,'himanshu','rawat','hi@gmail',2236352);
+insert into Customer values(13,'yash','kumar','ya@gmail',3336352);
+insert into Customer values(14,'abhishek','singh','ab@gmail',4436352);
+
+select * from Customer;
+
+insert into BuyingDetails values(10,103,'2022-09-21','iphone14');
+insert into BuyingDetails values(11,102,'2022-09-21','iphone14');
+insert into BuyingDetails values(12,101,'2022-11-01','mackbook');
+insert into BuyingDetails values(13,104,'2022-10-03','tv');
+insert into BuyingDetails values(14,105,'2022-10-30','beautyProducts');
+
+ select * from BuyingDetails;
+ 
+SELECT User.UserId, count(Referral.UserId) as numberofReferrals from User left join Referral
+on (User.UserId=Referral.UserId)
+group by
+    User.UserId;
+ 
+select userId,referralpoints from user;
+
+select firstname,mobile from User left join BuyingDetails on User.userId=BuyingDetails.userId where purchasedate=' 2022-09-21';
+
+select * from BuyingDetails where productname='iphone14';
+
+delete custermerId,firstname,lastname,email,mobile from customer left join  BuyingDetails on Customer.userId=BuyingDetails.UserId where productname='iphone14';
+
+create view userview as select user.firstname,user.lastname,user.email,user.mobile from user order by email,mobile;
+select * from  userview;
